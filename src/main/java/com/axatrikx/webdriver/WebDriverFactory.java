@@ -64,7 +64,7 @@ public class WebDriverFactory {
 		boolean useChromeFilePath = Utils.getBoolean(AxaConfig.getExecutionProperty("USE_CHROMEPROFILE"));
 		String chromeProfileFilePath = AxaConfig.getExecutionProperty("CHROME_PROFILEPATH");
 		boolean useFirefoxProfile = Utils.getBoolean(AxaConfig.getExecutionProperty("USE_FIREFOXPROFILE"));
-		String firefoxBinary = AxaConfig.getExecutionProperty("FIREFOX_PROFILEPATH");
+		String firefoxProfile = AxaConfig.getExecutionProperty("FIREFOX_PROFILE");
 		String downloadDir = AxaConfig.getExecutionProperty("DOWNLOAD_DIR");
 		boolean useProxy = Utils.getBoolean(AxaConfig.getConfiguration("USE_PROXY"));
 		String proxyHost = AxaConfig.getConfiguration("PROXY_HOST");
@@ -72,7 +72,7 @@ public class WebDriverFactory {
 		boolean javaScriptEnabled = Utils.getBoolean(AxaConfig.getExecutionProperty("HTMLUNIT_JAVASCRIPT_ENABLED"));
 
 		driver = new DriverLoader(browser, defaultTimeOut, maximizeWindow, useChromeFilePath, chromeProfileFilePath,
-				useFirefoxProfile, firefoxBinary, downloadDir, useProxy, proxyHost, proxyPort, javaScriptEnabled)
+				useFirefoxProfile, firefoxProfile, downloadDir, useProxy, proxyHost, proxyPort, javaScriptEnabled)
 						.getDriver();
 		return driver;
 	}
