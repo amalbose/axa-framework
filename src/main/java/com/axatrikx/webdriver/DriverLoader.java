@@ -29,6 +29,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
@@ -48,10 +49,10 @@ public class DriverLoader {
 	private String browser;
 	private int defaultTimeOut;
 	private boolean maximizeWindow;
-	private boolean useChromeFilePath;
-	private String chromeFilePath;
+	private boolean useChromeProfilePath;
+	private String chromeProfilePath;
 	private boolean useFirefoxProfile;
-	private String firefoxBinary;
+	private String firefoxProfile;
 	private String downloadDir;
 	private boolean useProxy;
 	private String proxyHost;
@@ -68,20 +69,20 @@ public class DriverLoader {
 	 * @param useChromeFilePath
 	 * @param chromeFilePath
 	 * @param useFirefoxProfile
-	 * @param firefoxBinary
+	 * @param firefoxProfile
 	 * @param downloadDir
 	 */
-	public DriverLoader(String browser, int defaultTimeOut, boolean maximizeWindow, boolean useChromeFilePath,
-			String chromeFilePath, boolean useFirefoxProfile, String firefoxBinary, String downloadDir,
+	public DriverLoader(String browser, int defaultTimeOut, boolean maximizeWindow, boolean useChromeProfilePath,
+			String chromeProfilePath, boolean useFirefoxProfile, String firefoxProfile, String downloadDir,
 			boolean useProxy, String proxyHost, String proxyPort, boolean javaScriptEnabled) {
 		super();
 		this.browser = browser;
 		this.defaultTimeOut = defaultTimeOut;
 		this.maximizeWindow = maximizeWindow;
-		this.useChromeFilePath = useChromeFilePath;
-		this.chromeFilePath = chromeFilePath;
+		this.useChromeProfilePath = useChromeProfilePath;
+		this.chromeProfilePath = chromeProfilePath;
 		this.useFirefoxProfile = useFirefoxProfile;
-		this.firefoxBinary = firefoxBinary;
+		this.firefoxProfile = firefoxProfile;
 		this.downloadDir = downloadDir;
 		this.useProxy = useProxy;
 		this.proxyHost = proxyHost;
@@ -125,7 +126,18 @@ public class DriverLoader {
 	 * @return
 	 */
 	private WebDriver getFirefoxDriver() {
-		FirefoxProfile profile = new FirefoxProfile();
+
+		FirefoxProfile profile;
+		if (useFirefoxProfile) {
+			ProfilesIni allProfiles = new ProfilesIni();
+			try {
+				profile = allProfiles.getProfile(firefoxProfile);
+			} catch (Exception e) {
+				profile = new FirefoxProfile();
+			}
+		} else {
+			profile = new FirefoxProfile();
+		}
 		profile.setPreference("browser.download.dir", downloadDir);
 		profile.setPreference("browser.download.folderList", 2);
 		if (useProxy) {
@@ -139,6 +151,7 @@ public class DriverLoader {
 		} else {
 			profile.setPreference("network.proxy.type", Proxy.ProxyType.AUTODETECT.ordinal());
 		}
+
 		return new FirefoxDriver(profile);
 	}
 
@@ -149,6 +162,7 @@ public class DriverLoader {
 		chromeOptions.addArguments("disable-popup-blocking");
 		Map<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("download.default_directory", downloadDir);
+		prefs.put("profile.default_content_settings.popups", 0);
 		chromeOptions.setExperimentalOption("prefs", prefs);
 
 		if (useProxy) {
@@ -157,6 +171,11 @@ public class DriverLoader {
 			proxy.setHttpProxy(proxyURL).setFtpProxy(proxyURL).setSslProxy(proxyURL);
 			capabilities.setCapability(CapabilityType.PROXY, proxy);
 		}
+
+		if (useChromeProfilePath) {
+			chromeOptions.addArguments("user-data-dir=" + chromeProfilePath);
+		}
+
 		capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
 		return new ChromeDriver(capabilities);
 	}
