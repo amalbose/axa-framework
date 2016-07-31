@@ -109,9 +109,6 @@ public class DriverLoader {
 		return driver;
 	}
 
-	/**
-	 * @return
-	 */
 	private WebDriver getFirefoxDriver() {
 		return new FirefoxLoader(firefoxBinaryPath, firefoxProfile, downloadDir, useProxy, proxyHost, proxyPort).getDriver();
 	}
