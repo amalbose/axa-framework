@@ -8,7 +8,7 @@ import com.axatrikx.AxaTest;
 
 public class NewTest extends AxaTest {
 
-//	@Test
+	@Test
 	public void test_Navigation() {
 		System.out.println("Running test...");
 		driver.get("http://axatrikx.com");
@@ -25,7 +25,7 @@ public class NewTest extends AxaTest {
 				"Incorrect page title");
 	}
 
-//	@Test(groups = { "Search", "Cucumber" })
+	@Test(groups = { "Search", "Cucumber" })
 	public void test_SearchBoxCucumber() {
 		System.out.println("Running test...");
 		driver.get("http://axatrikx.com");
