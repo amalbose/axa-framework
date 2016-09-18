@@ -31,7 +31,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestListener;
 
+import com.axatrikx.executor.ExecutionController;
+import com.axatrikx.report.ExecutionStatus;
+import com.axatrikx.report.IExecutionReporter;
 import com.google.common.base.Predicate;
 
 /**
@@ -41,16 +45,18 @@ import com.google.common.base.Predicate;
  */
 public class AxaDriver {
 
-	WebDriver driver;
-	ElementHelper eleHelper;
+	private WebDriver driver;
+	private ElementHelper eleHelper;
+	private IExecutionReporter reporter;
 
 	/**
 	 * Constructor for AxaDriver and obtains the WebDriver object from
 	 * {@link WebDriverFactory} based on execution configuration.
 	 */
 	public AxaDriver() {
-		driver = WebDriverFactory.getInstance().getDriver();
+		driver = WebDriverFactory.getInstance().getWebDriver();
 		eleHelper = WebDriverFactory.getInstance().getElementHelper();
+		reporter = ExecutionController.getController().getReporter();
 	}
 
 	/**
@@ -69,6 +75,7 @@ public class AxaDriver {
 	 */
 	public void get(String url) {
 		driver.get(url);
+		reporter.log("Navigation", "Navigated to url " + url, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -142,6 +149,7 @@ public class AxaDriver {
 	 */
 	public void quit() {
 		driver.quit();
+		reporter.log("Operation", "Quitting WebDriver", ExecutionStatus.INFO);
 	}
 
 	/**
@@ -149,6 +157,7 @@ public class AxaDriver {
 	 * currently open.
 	 */
 	public void close() {
+		reporter.log("Operation", "Closing window : " + driver.getWindowHandle(), ExecutionStatus.INFO);
 		driver.close();
 	}
 
@@ -169,6 +178,7 @@ public class AxaDriver {
 	 */
 	public void switchToWindow(String nameOrHandle) {
 		driver.switchTo().window(nameOrHandle);
+		reporter.log("Operation", "Switched window to " + nameOrHandle, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -176,6 +186,7 @@ public class AxaDriver {
 	 */
 	public void switchToAlert() {
 		driver.switchTo().alert();
+		reporter.log("Operation", "Switched to alert", ExecutionStatus.INFO);
 	}
 
 	/**
@@ -183,6 +194,7 @@ public class AxaDriver {
 	 */
 	public void acceptAlert() {
 		driver.switchTo().alert().accept();
+		reporter.log("Action", "Accepted alert", ExecutionStatus.INFO);
 	}
 
 	/**
@@ -190,6 +202,7 @@ public class AxaDriver {
 	 */
 	public void dismissAlert() {
 		driver.switchTo().alert().dismiss();
+		reporter.log("Action", "Dismissed alert", ExecutionStatus.INFO);
 	}
 
 	/**
@@ -199,6 +212,7 @@ public class AxaDriver {
 	 */
 	public void typeOnAlert(String keysToSend) {
 		driver.switchTo().alert().sendKeys(keysToSend);
+		reporter.log("Action", "Typed '" + keysToSend + "' on alert.", ExecutionStatus.INFO);
 	}
 
 	/**
@@ -208,16 +222,17 @@ public class AxaDriver {
 	 */
 	public void authenticateDialog(Credentials credentials) {
 		driver.switchTo().alert().authenticateUsing(credentials);
+		reporter.log("Action", "Authenticated alert.", ExecutionStatus.INFO);
 	}
 
 	/**
 	 * Selects either the first frame on the page, or the main document when a
 	 * page contains iframes.
 	 * 
-	 * @return
 	 */
-	public WebDriver switchToDefaultContent() {
-		return driver.switchTo().defaultContent();
+	public void switchToDefaultContent() {
+		driver.switchTo().defaultContent();
+		reporter.log("Operation", "Switched to default content", ExecutionStatus.INFO);
 	}
 
 	/**
@@ -227,6 +242,7 @@ public class AxaDriver {
 	 */
 	public void switchToFrame(int index) {
 		driver.switchTo().frame(index);
+		reporter.log("Operation", "Switched to frame by index " + index, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -236,6 +252,7 @@ public class AxaDriver {
 	 */
 	public void switchToFrame(String nameOrId) {
 		driver.switchTo().frame(nameOrId);
+		reporter.log("Operation", "Switched to frame by name or Id " + nameOrId, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -245,6 +262,7 @@ public class AxaDriver {
 	 */
 	public void switchToFrame(WebElement frameElement) {
 		driver.switchTo().frame(frameElement);
+		reporter.log("Operation", "Switched to frame", ExecutionStatus.INFO);
 	}
 
 	/**
@@ -382,6 +400,7 @@ public class AxaDriver {
 	 */
 	public void clear(String locator) {
 		eleHelper.findElement(locator).clear();
+		reporter.log("Action", "Clear text on text field" + locator, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -392,6 +411,7 @@ public class AxaDriver {
 	 */
 	public void click(String locator) {
 		eleHelper.findElement(locator).click();
+		reporter.log("Action", "Clicked on element " + locator, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -500,6 +520,7 @@ public class AxaDriver {
 		WebElement ele = eleHelper.findElement(locator);
 		ele.clear();
 		ele.sendKeys(keysToType);
+		reporter.log("Action", "Typed '" + keysToType + "' on element " + locator, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -512,6 +533,7 @@ public class AxaDriver {
 	 */
 	public void sendKeys(String locator, String keysToSend) {
 		eleHelper.findElement(locator).sendKeys(keysToSend);
+		reporter.log("Action", "Typed '" + keysToSend + "' on element " + locator, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -522,6 +544,7 @@ public class AxaDriver {
 	 */
 	public void submit(String locator) {
 		eleHelper.findElement(locator).submit();
+		reporter.log("Action", "Submitted form " + locator, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -546,6 +569,7 @@ public class AxaDriver {
 	public void selectByVisibleText(String locator, String visibleText) {
 		Select ele = new Select(eleHelper.findElement(locator));
 		ele.selectByVisibleText(visibleText);
+		reporter.log("Action", "Select '" + visibleText + "' on element " + locator, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -559,6 +583,7 @@ public class AxaDriver {
 	public void selectByIndex(String locator, int index) {
 		Select ele = new Select(eleHelper.findElement(locator));
 		ele.selectByIndex(index);
+		reporter.log("Action", "Select " + index + "th element on " + locator, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -569,9 +594,10 @@ public class AxaDriver {
 	 * @param value
 	 *            value to select
 	 */
-	public void selectByIndex(String locator, String value) {
+	public void selectByValue(String locator, String value) {
 		Select ele = new Select(eleHelper.findElement(locator));
 		ele.selectByValue(value);
+		reporter.log("Action", "Select '" + value + "' on element " + locator, ExecutionStatus.INFO);
 	}
 
 	/**
@@ -583,8 +609,12 @@ public class AxaDriver {
 	public void selectCheckBox(String locator) {
 		WebElement ele = eleHelper.findElement(locator);
 		boolean isSelected = ele.isSelected();
-		if (!isSelected)
+		if (!isSelected) {
 			ele.click();
+			reporter.log("Action", "Selected checkbox " + locator, ExecutionStatus.INFO);
+		} else {
+			reporter.log("Action", "Checkbox " + locator + " was already selected", ExecutionStatus.INFO);
+		}
 	}
 
 	/**
@@ -596,8 +626,12 @@ public class AxaDriver {
 	public void unSelectCheckBox(String locator) {
 		WebElement ele = eleHelper.findElement(locator);
 		boolean isSelected = ele.isSelected();
-		if (isSelected)
+		if (isSelected) {
 			ele.click();
+			reporter.log("Action", "Unselected checkbox " + locator, ExecutionStatus.INFO);
+		} else {
+			reporter.log("Action", "Checkbox " + locator + " was already unselected", ExecutionStatus.INFO);
+		}
 	}
 
 }

@@ -71,7 +71,7 @@ public class ChromeLoader implements IDriverLoader {
 	 */
 	@Override
 	public WebDriver getDriver() {
-		System.setProperty("webdriver.chrome.driver", Utils.getResource("chromedriver.exe").getAbsolutePath());
+		System.setProperty("webdriver.chrome.driver", Utils.getResource("chromedriver").getAbsolutePath());
 		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 		ChromeOptions chromeOptions = new ChromeOptions();
 		chromeOptions.addArguments("disable-popup-blocking");
