@@ -62,12 +62,14 @@ public interface IExecutionReporter {
 	 * @param details
 	 * @param status
 	 * @param err
+	 * @param screenShotPath
 	 */
-	public void log(String stepName, String details, ExecutionStatus status, Throwable err);
+	public void log(String stepName, String details, ExecutionStatus status, Throwable err, String screenShotPath);
 
 	/**
 	 * Assign test category
 	 * @param group
 	 */
 	public void assignCategory(String group);
+	
 }
