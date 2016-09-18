@@ -76,8 +76,10 @@ public class ExtentReporter implements IExecutionReporter {
 	 * com.axatrikx.report.ExecutionStatus, java.lang.Throwable)
 	 */
 	@Override
-	public void log(String stepName, String details, ExecutionStatus status, Throwable err) {
+	public void log(String stepName, String details, ExecutionStatus status, Throwable err, String screenShotPath) {
 		test.log(getLogStatus(status), stepName, err);
+		if (screenShotPath != null)
+			test.log(LogStatus.INFO, "ScreenShot", test.addScreenCapture(screenShotPath));
 	}
 
 	/**

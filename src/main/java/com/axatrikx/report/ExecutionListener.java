@@ -19,10 +19,18 @@
 package com.axatrikx.report;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
+
+import com.axatrikx.executor.ExecutionController;
+import com.axatrikx.webdriver.WebDriverFactory;
 
 /**
  * @author amalbose
@@ -91,7 +99,18 @@ public class ExecutionListener extends TestListenerAdapter {
 	@Override
 	public void onTestFailure(ITestResult tr) {
 		super.onTestFailure(tr);
-		reporter.log("Result", "Test Failed", ExecutionStatus.FAIL, tr.getThrowable());
+		WebDriver driver = WebDriverFactory.getInstance().getWebDriver();
+		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		String screenShotPath = null;
+		try {
+			String screenShotFileName = tr.getName() + ".png";
+			screenShotPath = ExecutionController.getController().getExecutionFolder() + "/" + screenShotFileName;
+			FileUtils.copyFile(scrFile, new File(screenShotPath));
+			screenShotPath = screenShotFileName;
+		} catch (IOException e) {
+			screenShotPath = null;
+		}
+		reporter.log("Result", "Test Failed", ExecutionStatus.FAIL, tr.getThrowable(), screenShotPath);
 		reporter.endTest();
 	}
 

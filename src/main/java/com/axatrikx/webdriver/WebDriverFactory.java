@@ -58,22 +58,24 @@ public class WebDriverFactory {
 	 * @return
 	 */
 	public WebDriver getWebDriver() {
-		String browser = AxaConfig.getExecutionProperty("BROWSER");
-		int defaultTimeOut = Integer.parseInt(AxaConfig.getExecutionProperty("DEFAULT_TIMEOUT"));
-		boolean maximizeWindow = Utils.getBoolean(AxaConfig.getExecutionProperty("MAXIMIZE_WINDOW"));
-		String chromeBinaryPath = AxaConfig.getExecutionProperty("CHROME_BINARY");
-		String chromeProfileFilePath = AxaConfig.getExecutionProperty("CHROME_PROFILEPATH");
-		String firefoxBinary = AxaConfig.getExecutionProperty("FIREFOX_BINARY");
-		String firefoxProfile = AxaConfig.getExecutionProperty("FIREFOX_PROFILE");
-		String downloadDir = AxaConfig.getExecutionProperty("DOWNLOAD_DIR");
-		boolean useProxy = Utils.getBoolean(AxaConfig.getConfiguration("USE_PROXY"));
-		String proxyHost = AxaConfig.getConfiguration("PROXY_HOST");
-		String proxyPort = AxaConfig.getConfiguration("PROXY_PORT");
-		boolean javaScriptEnabled = Utils.getBoolean(AxaConfig.getExecutionProperty("HTMLUNIT_JAVASCRIPT_ENABLED"));
+		if (driver == null) {
+			String browser = AxaConfig.getExecutionProperty("BROWSER");
+			int defaultTimeOut = Integer.parseInt(AxaConfig.getExecutionProperty("DEFAULT_TIMEOUT"));
+			boolean maximizeWindow = Utils.getBoolean(AxaConfig.getExecutionProperty("MAXIMIZE_WINDOW"));
+			String chromeBinaryPath = AxaConfig.getExecutionProperty("CHROME_BINARY");
+			String chromeProfileFilePath = AxaConfig.getExecutionProperty("CHROME_PROFILEPATH");
+			String firefoxBinary = AxaConfig.getExecutionProperty("FIREFOX_BINARY");
+			String firefoxProfile = AxaConfig.getExecutionProperty("FIREFOX_PROFILE");
+			String downloadDir = AxaConfig.getExecutionProperty("DOWNLOAD_DIR");
+			boolean useProxy = Utils.getBoolean(AxaConfig.getConfiguration("USE_PROXY"));
+			String proxyHost = AxaConfig.getConfiguration("PROXY_HOST");
+			String proxyPort = AxaConfig.getConfiguration("PROXY_PORT");
+			boolean javaScriptEnabled = Utils.getBoolean(AxaConfig.getExecutionProperty("HTMLUNIT_JAVASCRIPT_ENABLED"));
 
-		driver = new DriverLoader(browser, defaultTimeOut, maximizeWindow, chromeBinaryPath, chromeProfileFilePath,
-				firefoxBinary, firefoxProfile, downloadDir, useProxy, proxyHost, proxyPort, javaScriptEnabled)
-						.getDriver();
+			driver = new DriverLoader(browser, defaultTimeOut, maximizeWindow, chromeBinaryPath, chromeProfileFilePath,
+					firefoxBinary, firefoxProfile, downloadDir, useProxy, proxyHost, proxyPort, javaScriptEnabled)
+							.getDriver();
+		}
 		return driver;
 	}
 
