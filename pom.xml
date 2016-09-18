@@ -26,7 +26,7 @@
 						</manifestEntries>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.axatrikx.Main</mainClass>
+							<mainClass>com.axatrikx.tests.RunTestNG</mainClass>
 							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
 					</archive>

@@ -57,7 +57,7 @@ public class WebDriverFactory {
 	 * 
 	 * @return
 	 */
-	public WebDriver getDriver() {
+	public WebDriver getWebDriver() {
 		String browser = AxaConfig.getExecutionProperty("BROWSER");
 		int defaultTimeOut = Integer.parseInt(AxaConfig.getExecutionProperty("DEFAULT_TIMEOUT"));
 		boolean maximizeWindow = Utils.getBoolean(AxaConfig.getExecutionProperty("MAXIMIZE_WINDOW"));

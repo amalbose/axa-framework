@@ -20,6 +20,8 @@ package com.axatrikx.common;
 
 import java.io.File;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Utils class for the commonly used functions.
@@ -93,5 +95,13 @@ public class Utils {
 		if (value.equals("true") || value.equals("y") || value.equals("yes") || value.equals("1"))
 			return true;
 		return false;
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getTimeStampFolderName(String format) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+		return dateFormat.format(new Date());
 	}
 }
