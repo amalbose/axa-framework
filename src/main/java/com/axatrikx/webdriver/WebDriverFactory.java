@@ -59,7 +59,7 @@ public class WebDriverFactory {
 	 * @return
 	 */
 	public WebDriver getWebDriver() {
-		if (driver == null) {
+		if (driver == null || !isSessiveActive(driver)) {
 			String browser = AxaConfig.getExecutionProperty(Common.EXEC_CONF_BROWSER);
 			int defaultTimeOut = Integer.parseInt(AxaConfig.getExecutionProperty(Common.EXEC_CONF_DEFAULT_TIMEOUT));
 			boolean maximizeWindow = Utils.getBoolean(AxaConfig.getExecutionProperty(Common.EXEC_CONF_MAXIMIZE_WINDOW));
@@ -79,6 +79,15 @@ public class WebDriverFactory {
 							.getDriver();
 		}
 		return driver;
+	}
+
+	/**
+	 * Checks if sesstion is active or not
+	 * @param driver
+	 * @return
+	 */
+	private boolean isSessiveActive(WebDriver driver) {
+		return !driver.toString().contains("(null)");
 	}
 
 	/**
