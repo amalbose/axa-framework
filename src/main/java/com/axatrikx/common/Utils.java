@@ -25,6 +25,7 @@ import java.util.Date;
 
 /**
  * Utils class for the commonly used functions.
+ * 
  * @author amalbose
  *
  */
@@ -44,6 +45,22 @@ public class Utils {
 			}
 		}
 		return callingClass;
+	}
+
+	/**
+	 * Returns the OS name (NOT COMPLETE)
+	 * @return
+	 */
+	public static String getOS() {
+		String osName = System.getProperty("os.name").toLowerCase();
+		if (osName.contains("win")) {
+			osName = "Windows";
+		} else if (osName.contains("nux")) {
+			osName = "Unix";
+		} else {
+			// not taking care right now
+		}
+		return osName;
 	}
 
 	/**
