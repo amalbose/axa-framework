@@ -28,11 +28,13 @@ public class Common {
 
 	public static final String EXECUTION_PROP_FILE = "execution.properties";
 	public static final String CONF_PROP_FILE = "conf.properties";
+	public static final String SCRIPT_PROP_FILE = "scripts.properties";
 	public static final String EXECUTOR_TITLE = "Executor";
 	public static final String CLASS_SUFFIX = ".java";
 
 	public static final String DOT = ".";
 	public static final String SEPARATOR = "/";
+	public static final String NEWLINE = "\r\n";
 
 	public static final String EXEC_CONF_BROWSER = "BROWSER";
 	public static final String EXEC_CONF_DEFAULT_TIMEOUT = "DEFAULT_TIMEOUT";
