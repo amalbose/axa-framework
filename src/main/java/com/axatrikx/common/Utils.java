@@ -18,10 +18,18 @@
  */
 package com.axatrikx.common;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Utils class for the commonly used functions.
@@ -49,6 +57,7 @@ public class Utils {
 
 	/**
 	 * Returns the OS name (NOT COMPLETE)
+	 * 
 	 * @return
 	 */
 	public static String getOS() {
@@ -115,10 +124,52 @@ public class Utils {
 	}
 
 	/**
+	 * Get the time stamp as foldername
+	 * 
 	 * @return
 	 */
 	public static String getTimeStampFolderName(String format) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		return dateFormat.format(new Date());
+	}
+
+	/**
+	 * Write list of lines to file
+	 * 
+	 * @param file
+	 * @param executableScripts
+	 */
+	public static void writeListToFile(String file, List<String> lines) {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(file)));
+			for (String line : lines)
+				bw.write(line + Common.NEWLINE);
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Read file and return its contents as list
+	 * @param file
+	 * @return
+	 */
+	public static List<String> getFileAsList(String file) {
+		List<String> list = new ArrayList<String>();
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(new File(file)));
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				list.add(line);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }
