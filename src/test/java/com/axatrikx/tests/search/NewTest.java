@@ -8,6 +8,10 @@ import com.axatrikx.AxaTest;
 
 public class NewTest extends AxaTest {
 
+	public void beforeClass(){
+		System.out.println("nt before class");
+	}
+	
 	@Test
 	public void test_Navigation() {
 		System.out.println("Running test...");
@@ -39,15 +43,4 @@ public class NewTest extends AxaTest {
 		driver.quit();
 	}
 
-	// @Test
-	// public void f2() {
-	// System.out.println("Running test...");
-	// driver.findElement("{{HomePage>TextField_SearchBox}}");
-	// }
-	//
-	// @Test
-	// public void f3() {
-	// System.out.println("Running test...");
-	// driver.findElement("{{Invalid_Value}}");
-	// }
 }
