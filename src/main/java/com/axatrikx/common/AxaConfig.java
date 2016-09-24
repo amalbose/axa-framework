@@ -21,7 +21,12 @@ package com.axatrikx.common;
 import java.io.File;
 
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
 /**
@@ -34,7 +39,7 @@ public class AxaConfig {
 
 	private static Configuration config;
 	private static Configuration execProp;
-
+	private static FileBasedConfigurationBuilder<FileBasedConfiguration> builder;
 	// Loads conf and execution property files.
 	static {
 		Configurations configs = new Configurations();
@@ -45,7 +50,13 @@ public class AxaConfig {
 			cex.printStackTrace();
 		}
 		try {
-			execProp = configs.properties(new File(Common.EXECUTION_PROP_FILE));
+			// execProp = configs.properties(new
+			// File(Common.EXECUTION_PROP_FILE));
+			Parameters params = new Parameters();
+			builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+					.configure(params.properties().setFileName(Common.EXECUTION_PROP_FILE));
+			execProp = builder.getConfiguration();
+
 		} catch (ConfigurationException cex) {
 			System.out.println("Error loading Execution property file " + Common.EXECUTION_PROP_FILE);
 			cex.printStackTrace();
@@ -70,6 +81,22 @@ public class AxaConfig {
 	 */
 	public static String getExecutionProperty(String key) {
 		return execProp.getString(key);
+	}
+
+	/**
+	 * Save execution configuration
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public static void setExecutionConf(String key, String value) {
+		try {
+			execProp = builder.getConfiguration();
+			execProp.setProperty(key, value);
+			builder.save();
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
