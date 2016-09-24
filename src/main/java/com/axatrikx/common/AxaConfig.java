@@ -26,7 +26,6 @@ import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
-import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
 /**
@@ -84,15 +83,20 @@ public class AxaConfig {
 	}
 
 	/**
-	 * Save execution configuration
+	 * Set execution configuration
 	 * 
 	 * @param key
 	 * @param value
 	 */
 	public static void setExecutionConf(String key, String value) {
+		execProp.setProperty(key, value);
+	}
+
+	/**
+	 * Save execution configuration
+	 */
+	public static void saveExecutionConfChanges() {
 		try {
-			execProp = builder.getConfiguration();
-			execProp.setProperty(key, value);
 			builder.save();
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
