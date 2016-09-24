@@ -18,6 +18,8 @@
  */
 package com.axatrikx;
 
+import org.testng.annotations.BeforeClass;
+
 import com.axatrikx.executor.ExecutionController;
 import com.axatrikx.report.Assertion;
 import com.axatrikx.webdriver.AxaDriver;
@@ -32,8 +34,17 @@ public class AxaTest {
 	private Assertion assertion;
 
 	public AxaTest() {
+	}
+	
+	@BeforeClass
+	public void initializeDriver() {
 		driver = new AxaDriver();
 		assertion = ExecutionController.getController().getAssertion();
+		beforeClass();
+	}
+	
+	public void beforeClass(){
+		// can be overridden by individual tests
 	}
 	
 	public void assertTrue(boolean condition, String message){
