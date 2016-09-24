@@ -31,7 +31,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.security.Credentials;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.ITestListener;
 
 import com.axatrikx.executor.ExecutionController;
 import com.axatrikx.report.ExecutionStatus;
@@ -54,6 +53,7 @@ public class AxaDriver {
 	 * {@link WebDriverFactory} based on execution configuration.
 	 */
 	public AxaDriver() {
+		System.out.println("In axadriver constructor");
 		driver = WebDriverFactory.getInstance().getWebDriver();
 		eleHelper = WebDriverFactory.getInstance().getElementHelper();
 		reporter = ExecutionController.getController().getReporter();
@@ -149,6 +149,7 @@ public class AxaDriver {
 	 */
 	public void quit() {
 		driver.quit();
+		driver = null;
 		reporter.log("Operation", "Quitting WebDriver", ExecutionStatus.INFO);
 	}
 
