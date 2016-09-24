@@ -56,7 +56,7 @@ public interface IExecutionReporter {
 	public void log(String stepName, String details, ExecutionStatus status);
 
 	/**
-	 * Add log entry in case of exceptions
+	 * Add log entry in case of exceptions with screenshot
 	 * 
 	 * @param stepName
 	 * @param details
@@ -66,6 +66,16 @@ public interface IExecutionReporter {
 	 */
 	public void log(String stepName, String details, ExecutionStatus status, Throwable err, String screenShotPath);
 
+	/**
+	 * Add log entry in case of exceptions
+	 * @param stepName
+	 * @param details
+	 * @param status
+	 * @param err
+	 */
+	public void log(String stepName, String details, ExecutionStatus status, Throwable err);
+	
+	
 	/**
 	 * Assign test category
 	 * @param group

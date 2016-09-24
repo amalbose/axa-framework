@@ -52,6 +52,7 @@ public class ExecutionListener extends TestListenerAdapter {
 	@Override
 	public void onStart(ITestContext testContext) {
 		super.onStart(testContext);
+		System.out.println("Starting Test " + testContext.getCurrentXmlTest().getName());
 	}
 
 	/*
@@ -63,7 +64,6 @@ public class ExecutionListener extends TestListenerAdapter {
 	public void onFinish(ITestContext testContext) {
 		super.onFinish(testContext);
 		reporter.finish();
-		System.out.println("Completed Test");
 		System.out.println("Result folder " + new File(testContext.getOutputDirectory()).getParent());
 	}
 
@@ -89,6 +89,7 @@ public class ExecutionListener extends TestListenerAdapter {
 		super.onTestSuccess(tr);
 		reporter.log("Result", "Test Pass", ExecutionStatus.PASS);
 		reporter.endTest();
+		System.out.println(tr.getName() + " Passed");
 	}
 
 	/*
@@ -100,18 +101,23 @@ public class ExecutionListener extends TestListenerAdapter {
 	public void onTestFailure(ITestResult tr) {
 		super.onTestFailure(tr);
 		WebDriver driver = WebDriverFactory.getInstance().getWebDriver();
-		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-		String screenShotPath = null;
-		try {
-			String screenShotFileName = tr.getName() + ".png";
-			screenShotPath = ExecutionController.getController().getExecutionFolder() + "/" + screenShotFileName;
-			FileUtils.copyFile(scrFile, new File(screenShotPath));
-			screenShotPath = screenShotFileName;
-		} catch (IOException e) {
-			screenShotPath = null;
+		if (!driver.toString().contains("(null)")) {
+			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+			String screenShotPath = null;
+			try {
+				String screenShotFileName = tr.getName() + ".png";
+				screenShotPath = ExecutionController.getController().getExecutionFolder() + "/" + screenShotFileName;
+				FileUtils.copyFile(scrFile, new File(screenShotPath));
+				screenShotPath = screenShotFileName;
+			} catch (IOException e) {
+				screenShotPath = null;
+			}
+			reporter.log("Result", "Test Failed", ExecutionStatus.FAIL, tr.getThrowable(), screenShotPath);
+		} else {
+			reporter.log("Result", "Test Failed", ExecutionStatus.FAIL, tr.getThrowable());
 		}
-		reporter.log("Result", "Test Failed", ExecutionStatus.FAIL, tr.getThrowable(), screenShotPath);
 		reporter.endTest();
+		System.out.println(tr.getName() + " Failed");
 	}
 
 	/*
@@ -125,6 +131,7 @@ public class ExecutionListener extends TestListenerAdapter {
 		super.onTestSkipped(tr);
 		reporter.log("Result", "Test Skipped", ExecutionStatus.SKIP);
 		reporter.endTest();
+		System.out.println(tr.getName() + " Skipped");
 	}
 
 	/**

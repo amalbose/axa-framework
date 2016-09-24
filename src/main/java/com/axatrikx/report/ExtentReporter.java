@@ -131,4 +131,12 @@ public class ExtentReporter implements IExecutionReporter {
 		test.assignCategory(group);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.axatrikx.report.IExecutionReporter#log(java.lang.String, java.lang.String, com.axatrikx.report.ExecutionStatus, java.lang.Throwable)
+	 */
+	@Override
+	public void log(String stepName, String details, ExecutionStatus status, Throwable err) {
+		log(stepName, details, status, err, null);
+	}
+
 }
