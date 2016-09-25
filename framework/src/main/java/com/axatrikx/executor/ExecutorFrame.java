@@ -227,6 +227,8 @@ public class ExecutorFrame extends JFrame {
 	}
 
 	private void configureScripts() {
+		if(model==null)
+			return;
 		List<String> executableScripts = new ArrayList<String>();
 		List<TestClass> classes = model.getData();
 		for(TestClass cls: classes){
